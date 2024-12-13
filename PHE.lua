@@ -14,50 +14,41 @@ if not humanoid then
     return
 end
 
-local isLooping = false
+local VirtualUser = game:GetService("VirtualUser")
+local Players = game:GetService("Players")
 
-player.Chatted:Connect(function(message)
-    if message == "!on" then
-        isLooping = true
-        print("Loop started.")
-    elseif message == "!off" then
-        isLooping = false
-        print("Loop stopped.")
-    end
+Players.LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
 end)
 
-while true do
-    if isLooping then
-        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Z, false, game)
+while humanoid.Health > 0 do
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Z, false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Z, false, game)
+
+    if not humanoid.Sit then
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, game)
         wait(0.1)
-        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Z, false, game)
+        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, game)
+    end
 
-        if not humanoid.Sit then
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, game)
-            wait(0.1)
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, game)
-        end
-
-        if humanoid.Sit then
-            local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
-            if car then
-                while humanoid.Sit and isLooping do
-                    if car.PrimaryPart then
-                        car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
-                        wait(0.1)
-                        car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
-                    end
+    if humanoid.Sit then
+        local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
+        if car then
+            while humanoid.Sit and humanoid.Health > 0 do
+                if car.PrimaryPart then
+                    car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
                     wait(0.1)
+                    car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
                 end
+                wait(0.1)
             end
         end
-
-        wait(1)
-        character = player.Character or player.CharacterAdded:Wait()
-        humanoid = character:FindFirstChildOfClass("Humanoid")
-        humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    else
-        wait(0.1)
     end
-    wait(0.1)
+
+    wait(1)
+    character = player.Character or player.CharacterAdded:Wait()
+    humanoid = character:FindFirstChildOfClass("Humanoid")
+    humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 end
