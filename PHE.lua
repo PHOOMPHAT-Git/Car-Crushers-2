@@ -36,6 +36,11 @@ while humanoid.Health > 0 do
     if humanoid.Sit then
         local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
         if car then
+            local wheel = car:FindFirstChild("Car"):FindFirstChild("Wheels")
+            if wheel then
+                wheel:Destroy()
+            end
+
             while humanoid.Sit and humanoid.Health > 0 do
                 if car.PrimaryPart then
                     car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
