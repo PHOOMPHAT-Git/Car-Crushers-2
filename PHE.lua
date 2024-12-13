@@ -1,3 +1,9 @@
+for _, obj in pairs(game.Players.LocalPlayer.PlayerScripts:GetChildren()) do
+    if obj:IsA("LocalScript") and obj.Name == script.Name then
+        obj:Destroy()
+    end
+end
+
 local FarmPositions = {
     [1] = CFrame.new(-946.2724, 5.51282597, 7.54263878, 0.00109819393, 0.000229234487, -0.999999344, 3.33046046e-05, 1, 0.000229271202, 0.999999404, -3.35563709e-05, 0.00109818624) * CFrame.Angles(0, math.rad(0), 0),
     [2] = CFrame.new(-4.81228876, 5.46991444, 1261.98413, 0.99996537, -3.03346787e-05, 0.00832322147, 3.67171669e-05, 0.999999702, -0.0007666772, -0.00832319539, 0.000766956247, 0.999965072) * CFrame.Angles(0, math.rad(0), 0),
@@ -46,31 +52,35 @@ local function setupCharacter(character)
     local wasSitting = false
 
     while humanoid.Health > 0 do
-        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Z, false, game)
-        wait(0.1)
-        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Z, false, game)
-
-        if not humanoid.Sit then
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, game)
+        if _G.Enable then
+            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Z, false, game)
             wait(0.1)
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, game)
-        end
+            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Z, false, game)
 
-        if humanoid.Sit then
-            local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
-            if car.PrimaryPart then
-                local zoneIndex = 1
-                if _G.FarmZone[zoneIndex] then
-                    car:SetPrimaryPartCFrame(FarmPositions[_G.FarmZone[zoneIndex]])
-                    dashForward()
-                    wait(2.5)
-                end
+            if not humanoid.Sit then
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, game)
+                wait(0.1)
+                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, game)
             end
-        elseif wasSitting then
-            wasSitting = false
-        end
 
-        wait(1)
+            if humanoid.Sit then
+                local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
+                if car.PrimaryPart then
+                    local zoneIndex = 1
+                    if _G.FarmZone[zoneIndex] then
+                        car:SetPrimaryPartCFrame(FarmPositions[_G.FarmZone[zoneIndex]])
+                        dashForward()
+                        wait(2.5)
+                    end
+                end
+            elseif wasSitting then
+                wasSitting = false
+            end
+
+            wait(1)
+        else
+            wait(1)
+        end
     end
 end
 
