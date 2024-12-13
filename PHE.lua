@@ -38,8 +38,6 @@ while humanoid.Health > 0 do
         if car then
             while humanoid.Sit and humanoid.Health > 0 do
                 if car.PrimaryPart then
-                    car:SetPrimaryPartCFrame(CFrame.new(-237.85083, 57.0881844, 245.69104, 0.744154632, 5.66782177e-09, -0.668007374, 5.95475536e-09, 1, 1.51182178e-08, 0.668007374, -1.52281121e-08, 0.744154632))
-                    wait(0.1)
                     car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
                     wait(0.1)
                     car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
