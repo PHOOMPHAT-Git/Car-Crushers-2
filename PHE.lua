@@ -11,12 +11,12 @@ if not player then
 end
 
 local function setupCharacter(character)
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
     if not humanoidRootPart then
         return
     end
 
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local humanoid = character:WaitForChild("Humanoid", 5)
     if not humanoid then
         return
     end
@@ -29,13 +29,12 @@ local function setupCharacter(character)
         VirtualUser:ClickButton2(Vector2.new())
     end)
 
-    local ForwardSpeed = 1000
     local DashDuration = 0.1
 
     local function dashForward()
         if humanoid.Sit then
             local bodyVelocity = Instance.new("BodyVelocity")
-            bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * ForwardSpeed
+            bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * _G.ForwardSpeed
             bodyVelocity.MaxForce = Vector3.new(5000e5, 5000e5, 5000e5)
             bodyVelocity.Parent = humanoidRootPart
 
@@ -69,9 +68,6 @@ local function setupCharacter(character)
             end
         elseif wasSitting then
             wasSitting = false
-        end
-
-        if humanoid.Health > 0 then
         end
 
         wait(1)
