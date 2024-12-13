@@ -36,7 +36,7 @@ local function dashForward()
     if humanoid.Sit then
         local bodyVelocity = Instance.new("BodyVelocity")
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * ForwardSpeed
-        bodyVelocity.MaxForce = Vector3.new(500e5, 500e5, 500e5)
+        bodyVelocity.MaxForce = Vector3.new(5000e5, 5000e5, 5000e5)
         bodyVelocity.Parent = humanoidRootPart
 
         wait(DashDuration)
