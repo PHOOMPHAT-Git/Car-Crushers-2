@@ -22,6 +22,9 @@ Players.LocalPlayer.Idled:Connect(function()
     VirtualUser:ClickButton2(Vector2.new())
 end)
 
+local lastSitPosition = nil
+local wasSitting = false
+
 while humanoid.Health > 0 do
     game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Z, false, game)
     wait(0.1)
@@ -34,6 +37,11 @@ while humanoid.Health > 0 do
     end
 
     if humanoid.Sit then
+        if not wasSitting then
+            lastSitPosition = humanoidRootPart.Position
+            wasSitting = true
+        end
+
         local car = game.Workspace.CarCollection:FindFirstChild(player.Name)
         if car then
             local wheel = car:FindFirstChild("Car"):FindFirstChild("Wheels")
@@ -43,15 +51,17 @@ while humanoid.Health > 0 do
 
             while humanoid.Sit and humanoid.Health > 0 do
                 if car.PrimaryPart then
-                    car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+                    car:SetPrimaryPartCFrame(CFrame.new(lastSitPosition))
                     wait(0.1)
-                    car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+                    car:SetPrimaryPartCFrame(CFrame.new(lastSitPosition))
                     wait(0.1)
-                    car:SetPrimaryPartCFrame(CFrame.new(humanoidRootPart.Position))
+                    car:SetPrimaryPartCFrame(CFrame.new(lastSitPosition))
                 end
                 wait(0.1)
             end
         end
+    elseif wasSitting then
+        wasSitting = false
     end
 
     wait(1)
